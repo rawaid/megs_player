@@ -1,0 +1,191 @@
+
+<!DOCTYPE html>
+<html lang="en" ng-app = "playerModule">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="http://i.imgur.com/J67xWFJ.png">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
+
+    <script src ="app.js"></script>
+    <script src="angular-audio/app/angular.audio.js"</script>
+
+    <script src="https://code.angularjs.org/1.2.16/angular-route.min.js"></script>
+
+    <title>MegsRadio - Player</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://jasny.github.io/bootstrap/dist/css/jasny-bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style>
+      *{
+        font-family: "Helvetica Neue", Helvetica;
+        color:white;
+      }
+
+      html, body {
+        height: 100%;
+        overflow:hidden;
+      }
+
+      .navbar-toggle {
+        float: left;
+        margin-left: 15px;
+      }
+
+      .navmenu {
+        z-index: 1;
+      }
+
+      .canvas {
+        position: relative;
+        left: 0;
+        z-index: 2;
+        min-height: 100%;
+        padding: 50px 0 0 0;
+        background: #fff;
+      }
+
+      @media (min-width: 0) {
+        .navbar-toggle {
+          display: block; /* force showing the toggle */
+        }
+      }
+
+      @media (min-width: 992px) {
+        body {
+          padding: 0;
+        }
+        .navbar {
+          right: auto;
+          background: none;
+          border: none;
+        }
+        .canvas {
+          padding: 0;
+        }
+      }
+      .glyphicon{
+        font-size: 50px;
+        cursor:pointer;
+        cursor:hand;
+
+      }
+      .art{
+        margin-top:50px;
+        margin-bottom:50px;
+        padding:1px;
+        border: 1px solid #021a40;
+        background-color:white;
+        
+      }
+      .bgContainer{
+        overflow:hidden;
+      }
+      .background-image {
+        background-size: cover;
+        display: block;
+        filter: blur(15px);
+        -webkit-filter: blur(15px);
+        height: 100%;
+        width:100%;
+        position: absolute;
+        z-index: -1;
+        transform:scale(1.1);
+        overflow:hidden;
+      }
+      .MegsHeader{
+        color: white;
+      }
+    </style>
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="navmenu navmenu-default navmenu-fixed-left">
+      <a class="navmenu-brand" href="#">MegsRadio</a>
+      <ul class="nav navmenu-nav">
+        <li><a href="../navmenu/">Slide in</a></li>
+        <li><a href="../navmenu-push/">Push</a></li>
+        <li class="active"><a href="./">Reveal</a></li>
+        <li><a href="../navbar-offcanvas/">Off canvas navbar</a></li>
+      </ul>
+      <ul class="nav navmenu-nav">
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li><a href="#">Link</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+          <ul class="dropdown-menu navmenu-nav">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li class="dropdown-header">Nav header</li>
+            <li><a href="#">Separated link</a></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="canvas">
+      <div class="navbar navbar-default navbar-fixed-top">
+        <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-recalc="false" data-target=".navmenu" data-canvas=".canvas">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+    <div class="bgContainer">
+      <div class="background-image" ng-style="{ 'background-image': 'url({{bgImg.background}})' }" ng-controller="playerController">
+      </div>
+    </div>
+    <h1 class = "MegsHeader"><center>MegsRadio</center></h1>
+    <h2 ng-controller="playerController">{{bgImg.background}}</h2>
+      <div class="container" ng-controller="playerController">
+        <div class = "row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <img src = "tame.jpg" height="350" width="350" class = "art">
+          </div>
+          <div class = "col-md-4"></div>
+          <div class="col-md-12">
+            <p>Play icon: <span ng-click="audio.paused ? audio.play() : audio.pause()" class="glyphicon glyphicon-play"></span></p>
+            <p>Pause icon: <span ng-click='audio.paused ? audio.play() : audio.pause()' class="glyphicon glyphicon-pause"></span></p>
+            <p>Skip icon: <span ng-click='stopTrack();bgChanged();' class="glyphicon glyphicon-step-forward"></span></p>
+
+
+            Current Time:<input class="form-control ng-pristine ng-valid" type="text"  ng-model="audio.currentTime">
+            Remaining:<input class="form-control ng-pristine ng-valid" type="text"  ng-model="audio.remaining">
+
+            Progress:<input class="form-control ng-pristine ng-valid" type="range" min="0" max="1" step="0.01" ng-model="audio.progress">
+            Volume:<input class="form-control ng-pristine ng-valid" type="range" min="0" max="1" step="0.01" ng-model="audio.volume">
+          </div>
+
+
+      </div><!-- /.container -->
+    </div>
+    
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="http://jasny.github.io/bootstrap/dist/js/jasny-bootstrap.min.js"></script>
+  </body>
+</html>

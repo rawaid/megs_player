@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="yourModule">
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
+
+    <script src ="app.js"></script>
+    <script src="angular-audio/app/angular.audio.js"</script>
+
+    <script src="https://code.angularjs.org/1.2.16/angular-route.min.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .glyphicon{
+        font-size: 50px;
+        cursor:pointer;
+        cursor:hand;
+      }
+  
+    </style>
+    
+  </head>
+  <body>
+  <title>MegsRadio - Player</title>
+  <div ng-controller="yourController">
+    <p>Play icon: <span ng-click="audio.paused ? audio.play() : audio.pause()" volume = "0.5" start="0.2" class="glyphicon glyphicon-play"></span></p>
+    <p>Pause icon: <span ng-click='audio.paused ? audio.play() : audio.pause()' class="glyphicon glyphicon-pause"></span></p>
+
+  </div>
+  
+  </body>
+</html>
